@@ -13,7 +13,7 @@ public class RecipeClass {
 	private int qtMat3;
 	private int qtMat4;
 	private int qtMat5;
-	private int numMats;
+	
 	
 	private int sell;
 
@@ -28,8 +28,6 @@ public class RecipeClass {
 			int qtMat3,
 			int qtMat4,
 			int qtMat5){
-		
-		this.numMats = 0;
 		
 		this.name = name;
 		this.mat1 = mat1;
@@ -48,37 +46,6 @@ public class RecipeClass {
 
 	}
 	
-	private void setNumMats(){
-		int temp_count = 0;
-		
-		if (this.qtMat1 > 0){
-			temp_count++;
-		}
-		
-		if (this.qtMat2 > 0){
-			temp_count++;
-		}
-		
-		if (this.qtMat3 > 0){
-			temp_count++;
-		}
-		
-		if (this.qtMat4 > 0){
-			temp_count++;
-		}
-		
-		if (this.qtMat5 > 0){
-			temp_count++;
-		}
-		
-		this.numMats = temp_count;
-			
-	}
-	
-	public int getNumMats() {
-		return numMats;
-	}
-
 	public String printRecipe(){
 		
 		String output = this.name + "   ";

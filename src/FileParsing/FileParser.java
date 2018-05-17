@@ -1,14 +1,11 @@
 package FileParsing;
-import java.awt.List;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Iterator;
-import java.util.Set;
+
 
 import Databases.CraftingRecipeDatabase;
 import Databases.DatabasePopulator;
@@ -19,9 +16,6 @@ public class FileParser {
 
 	private int current_prof; // 0=Alchemy
 	private int data_type;    // 0=Recipe, 1=PriceData
-
-	private ArrayList<String> alch_recipe_names;
-	private ArrayList<String> alch_recipe_mats;
 
 	private DatabasePopulator db_pop;
 	CraftingRecipeDatabase recipe_data;
@@ -219,8 +213,8 @@ public class FileParser {
 		ArrayList<String> temp_list = new ArrayList<String>(Arrays.asList(line.split(",")));
 		System.out.println("Here");
 		String name = temp_list.get(0);
-		int cost = Integer.parseInt(temp_list.get(1));
-		int sell = Integer.parseInt(temp_list.get(2));
+		double cost = Double.parseDouble(temp_list.get(1));
+		double sell = Double.parseDouble(temp_list.get(2));
 		
 		db_pop.addMaterial(current_prof, name, cost, sell);
 		

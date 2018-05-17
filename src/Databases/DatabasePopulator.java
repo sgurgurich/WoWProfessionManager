@@ -15,7 +15,7 @@ public class DatabasePopulator {
 	
 	public void addRecipe(int prof_code, String rec_name, int qt1, MaterialClass mat1){
 		RecipeClass temp_recipe = new RecipeClass(rec_name, mat1, null, null, null, null, qt1, 0, 0, 0, 0);
-		recipe_data.addRecipe(prof_code, temp_recipe);
+		recipe_data.addRecipe(prof_code, temp_recipe); 
 	}
 	
 	public void addRecipe(int prof_code, String rec_name, int qt1, MaterialClass mat1, int qt2, MaterialClass mat2){
@@ -41,7 +41,7 @@ public class DatabasePopulator {
 		recipe_data.addRecipe(prof_code, temp_recipe);
 	}
 	
-	public void addMaterial(int prof_code, String mat_name, int cost, int sell){
+	public void addMaterial(int prof_code, String mat_name, double cost, double sell){
 		MaterialClass temp_mat = new MaterialClass(mat_name, cost, sell);
 		material_data.addMaterial(prof_code, temp_mat);
 	}

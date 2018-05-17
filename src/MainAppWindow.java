@@ -9,28 +9,36 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JTextField;
 
 import Databases.CraftingRecipeDatabase;
+import Databases.MaterialMapper;
 import Databases.MaterialsDatabase;
 import FileParsing.FileParser;
-import MaterialLists.MaterialListFactory;
-import MaterialLists.MaterialListIntf;
-import RecipeClasses.*;
+import javax.swing.JSeparator;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 public class MainAppWindow {
 
 	private JFrame frame;
-	private DefaultListModel<String> matsModel;
-	private DefaultListModel<String> recModel;
+	private DefaultTableModel matsModel;
+	private DefaultTableModel recModel;
+	FileParser parse;
+	CraftingRecipeDatabase recipe_database;
+	MaterialsDatabase materials_database;
+	MaterialMapper material_mapper;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
-	FileParser parse;
-	CraftingRecipeDatabase recipe_database;
-	MaterialsDatabase materials_database;
-
+	String[][] mats_data;
+	String[][] rec_data;
+    String[] mat_columns;
+	String[] rec_columns;
+	int entered_quantity;
+	double estimated_cost;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -59,113 +67,90 @@ public class MainAppWindow {
 	 */
 	private void initialize() {
 		
+		entered_quantity = 0;
+		estimated_cost = 0;
+		
+		//Create a list of all crafting professions
+		String[] profStrings = {"Alchemy","Blacksmithing","Enchanting","Engineering","Inscription","Jewelcrafting","Leatherworking","Tailoring"};
+		String initial_profession = "Alchemy";
+        mat_columns = new String[] {"Material", "Cost", "Sell Price", "Profit"};
+        rec_columns = new String[] {"Recipe", " ", "Mat 1", " ", "Mat 2", " ", "Mat 3", " ", "Mat 4", " ", "Mat 5",};
+		
+		
+		//Create the databases
 		materials_database = new MaterialsDatabase();
 		recipe_database = new CraftingRecipeDatabase();
-		
-		MaterialListFactory mlf = new MaterialListFactory();
-		MaterialListIntf mat_list_obj = mlf.grabMatData("Alch"); 
+		material_mapper = new MaterialMapper(recipe_database, materials_database);
+
+		//Parse the data files to populate the databases
 		parse = new FileParser(recipe_database, materials_database);
 		parse.parseDirectory();
 		
-		matsModel = new DefaultListModel<String>();
-		recModel = new DefaultListModel<String>();
-		populateMatsModel();
-		populateRecipeModel();
+		//Map all Material objects to their place in the recipes
+		material_mapper.mapMaterials();
 		
-		
-		String[] profStrings = {"Alchemy","Blacksmithing","Enchanting","Engineering","Inscription","Jewelcrafting","Leatherworking","Tailoring"};
+		//Populate the display list models from the databases
+		populateMatsModel(initial_profession);
+		populateRecipeModel(initial_profession);
 		
 		
 		frame = new JFrame("WoW Profession Manager");
-		frame.setBounds(100, 100, 1000, 600);
+		frame.setBounds(100, 100, 1280, 520);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		JComboBox comboBox = new JComboBox(profStrings);
-		comboBox.setBounds(26, 65, 204, 22);
-		frame.getContentPane().add(comboBox);
-		
 		JScrollPane scrollPane = new JScrollPane();
-		JList<String> list = new JList<String>(matsModel);
-		list.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		//list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		scrollPane.setViewportView(list);
+		JTable table = new JTable(matsModel);
+		table.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		scrollPane.setViewportView(table); 
 		scrollPane.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		scrollPane.setBounds(253, 66, 265, 174);
+		scrollPane.setBounds(254, 29, 704, 207);
 		frame.getContentPane().add(scrollPane);
 		
+		
 		JScrollPane scrollPane2 = new JScrollPane();
-		JList<String> list2 = new JList<String>(recModel);
-		list2.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		//list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		scrollPane2.setViewportView(list2);
+		JTable table2 = new JTable(recModel);
+		table2.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		table2.getColumnModel().getColumn(0).setPreferredWidth(500);
+		table2.getColumnModel().getColumn(1).setPreferredWidth(75);
+		table2.getColumnModel().getColumn(2).setPreferredWidth(300);
+		table2.getColumnModel().getColumn(3).setPreferredWidth(75);
+		table2.getColumnModel().getColumn(4).setPreferredWidth(300);
+		table2.getColumnModel().getColumn(5).setPreferredWidth(75);
+		table2.getColumnModel().getColumn(6).setPreferredWidth(300);
+		table2.getColumnModel().getColumn(7).setPreferredWidth(75);
+		table2.getColumnModel().getColumn(8).setPreferredWidth(300);
+		table2.getColumnModel().getColumn(9).setPreferredWidth(75);
+		table2.getColumnModel().getColumn(10).setPreferredWidth(300);
+		scrollPane2.setViewportView(table2); 
 		scrollPane2.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		scrollPane2.setBounds(552, 66, 395, 174);
+		scrollPane2.setBounds(254, 272, 989, 197);
 		frame.getContentPane().add(scrollPane2);
 		
+		JComboBox comboBox = new JComboBox(profStrings);
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				resetTableModels();
+				populateMatsModel(comboBox.getSelectedItem().toString());
+				populateRecipeModel(comboBox.getSelectedItem().toString());
+				table.setModel(matsModel);
+				table2.setModel(recModel);
+			}
+		});
+		comboBox.setBounds(26, 29, 204, 22);
+		frame.getContentPane().add(comboBox);
+		
 		JLabel lblMaterialsAndPrices = new JLabel("Materials and Prices");
-		lblMaterialsAndPrices.setBounds(253, 46, 142, 16);
+		lblMaterialsAndPrices.setBounds(253, 11, 142, 16);
 		frame.getContentPane().add(lblMaterialsAndPrices);
 		
 		JLabel lblSelectAProfession = new JLabel("Select a Profession");
-		lblSelectAProfession.setBounds(26, 46, 134, 16);
+		lblSelectAProfession.setBounds(26, 11, 134, 16);
 		frame.getContentPane().add(lblSelectAProfession);
 		
-		JButton btnChangeMaterialData = new JButton("Change Material Data");
-		btnChangeMaterialData.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//open popup to change selected material data
-				int selected_mat_idx = list.getSelectedIndex();
-				System.out.println(selected_mat_idx);
-				
-			}
-		});
-		btnChangeMaterialData.setBounds(283, 305, 204, 25);
-		frame.getContentPane().add(btnChangeMaterialData);
-		
-		textField = new JTextField();
-		textField.setBounds(253, 270, 116, 22);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
-		
-		textField_1 = new JTextField();
-		textField_1.setBounds(402, 270, 116, 22);
-		frame.getContentPane().add(textField_1);
-		textField_1.setColumns(10);
-		
-		JLabel lblCost = new JLabel("Cost");
-		lblCost.setBounds(253, 253, 56, 16);
-		frame.getContentPane().add(lblCost);
-		
-		JLabel lblSellPrice = new JLabel("Sell Price");
-		lblSellPrice.setBounds(402, 253, 56, 16);
-		frame.getContentPane().add(lblSellPrice);
-		
 		JLabel lblRecipes = new JLabel("Recipes");
-		lblRecipes.setBounds(552, 46, 56, 16);
+		lblRecipes.setBounds(254, 256, 56, 16);
 		frame.getContentPane().add(lblRecipes);
-		
-		textField_2 = new JTextField();
-		textField_2.setBounds(614, 270, 116, 22);
-		frame.getContentPane().add(textField_2);
-		textField_2.setColumns(10);
-		
-		textField_3 = new JTextField();
-		textField_3.setBounds(768, 270, 116, 22);
-		frame.getContentPane().add(textField_3);
-		textField_3.setColumns(10);
-		
-		JButton btnChangeRecipeData = new JButton("Change Recipe Data");
-		btnChangeRecipeData.setBounds(666, 305, 175, 25);
-		frame.getContentPane().add(btnChangeRecipeData);
-		
-		JLabel lblCost_1 = new JLabel("Cost");
-		lblCost_1.setBounds(614, 253, 56, 16);
-		frame.getContentPane().add(lblCost_1);
-		
-		JLabel lblSellPrice_1 = new JLabel("Sell Price");
-		lblSellPrice_1.setBounds(768, 253, 56, 16);
-		frame.getContentPane().add(lblSellPrice_1);
 		
 		JButton btnTest = new JButton("TEST");
 		btnTest.addActionListener(new ActionListener() {
@@ -174,29 +159,93 @@ public class MainAppWindow {
 				recipe_database.displayRecipe(0);
 			}
 		});
-		btnTest.setBounds(70, 439, 97, 25);
+		btnTest.setBounds(146, 432, 97, 25);
 		frame.getContentPane().add(btnTest);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(26, 247, 932, 10);
+		frame.getContentPane().add(separator);
+		
+		textField_1 = new JTextField(Double.toString(estimated_cost));
+		textField_1.setBounds(122, 299, 108, 20);
+		frame.getContentPane().add(textField_1);
+		textField_1.setColumns(10);
+		
+		textField = new JTextField();
+		textField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				calculateCost();
+				textField_1.setText(Double.toString(estimated_cost));
+			}
+		});
+		textField.setBounds(26, 299, 86, 20);
+		frame.getContentPane().add(textField);
+		textField.setColumns(10);
+		
+		JLabel lblAmountCreated = new JLabel("Quantity");
+		lblAmountCreated.setBounds(26, 283, 113, 14);
+		frame.getContentPane().add(lblAmountCreated);
+		
+		JLabel lblEstimatedCost = new JLabel("Estimated Cost");
+		lblEstimatedCost.setBounds(122, 283, 87, 14);
+		frame.getContentPane().add(lblEstimatedCost);
+		
+		JButton btnCalculateProfit = new JButton("Calculate Profit");
+		btnCalculateProfit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					entered_quantity = Integer.parseInt(textField.getText());
+					double profit_earned = 1.0;
+				}
+				catch (NumberFormatException nfe) {
+					
+				}
+			}
+		});
+		btnCalculateProfit.setBounds(26, 330, 204, 23);
+		frame.getContentPane().add(btnCalculateProfit);
+		
+		textField_2 = new JTextField();
+		textField_2.setBounds(122, 370, 108, 20);
+		frame.getContentPane().add(textField_2);
+		textField_2.setColumns(10);
+		
+		textField_3 = new JTextField();
+		textField_3.setBounds(123, 401, 107, 20);
+		frame.getContentPane().add(textField_3);
+		textField_3.setColumns(10);
+		
+		JLabel lblEstProfitunit = new JLabel("Est. Profit/Unit");
+		lblEstProfitunit.setBounds(26, 373, 86, 14);
+		frame.getContentPane().add(lblEstProfitunit);
+		
+		JLabel lblEstTotalProfit = new JLabel("Est. Total Profit");
+		lblEstTotalProfit.setBounds(26, 404, 86, 14);
+		frame.getContentPane().add(lblEstTotalProfit);
+		
+		JLabel lblSGurgurich = new JLabel("S. Gurgurich");
+		lblSGurgurich.setFont(new Font("Tahoma", Font.PLAIN, 8));
+		lblSGurgurich.setBounds(1214, 467, 86, 14);
+		frame.getContentPane().add(lblSGurgurich);
 	}
 	
-	private void populateMatsModel(){
-		
-		String[] mats_arr = materials_database.packAllMaterials();
-		
-		matsModel.addElement("Material              " + "Cost        " + "Sell Price");
-		for (int i = 0; i < mats_arr.length; i++){
-			matsModel.addElement(mats_arr[i]);
-		}
+	private void populateMatsModel(String prof){
+		mats_data = materials_database.packAllMaterials(prof);	
+		matsModel = new DefaultTableModel(mats_data, mat_columns);
 	}
 	
-	private void populateRecipeModel(){
-		//matsModel.addElement("Material              " + "Cost        " + "Sell Price");
-		String[] rec_arr = recipe_database.packAllRecipes();
+	private void populateRecipeModel(String prof){
 		
-		for (int i = 0; i < rec_arr.length; i++){
-			recModel.addElement(rec_arr[i]);
-		}
-		
-		
-		
+		rec_data = recipe_database.packAllRecipes(prof);
+		recModel = new DefaultTableModel(rec_data, rec_columns);
+	}
+	
+	private void resetTableModels(){
+		matsModel.setRowCount(0);
+		recModel.setRowCount(0);
+	}
+	
+	private void calculateCost() {
+		estimated_cost = 2000.01;
 	}
 }
