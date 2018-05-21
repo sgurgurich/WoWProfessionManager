@@ -100,7 +100,7 @@ public class MainAppWindow {
 		
 		
 		frame = new JFrame("WoW Profession Manager");
-		frame.setBounds(100, 100, 1280, 520);
+		frame.setBounds(100, 100, 1280, 529);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
