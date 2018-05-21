@@ -223,14 +223,9 @@ public class MainAppWindow {
 					
 					textField_2.setText(Double.toString(est_profit_per));
 					textField_3.setText(Double.toString(est_profit));
+	
 					
-					System.out.println(temp_rec.getName());
-					System.out.println(entered_quantity);
-					System.out.println(calculateCost(temp_rec));
-					System.out.println(calculateSales(temp_rec));
-					
-					
-					
+			
 				}
 				catch (NumberFormatException nfe) {
 					//pass

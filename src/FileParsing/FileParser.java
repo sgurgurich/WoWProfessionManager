@@ -36,11 +36,11 @@ public class FileParser {
 
 
 		File[] directoryListing = dir.listFiles();
-		System.out.println(directoryListing);
+		
 		if (directoryListing != null) {
 			for (File child : directoryListing) {
 				// Do something with child
-				System.out.print(child.getName());
+				
 				parseFile(child.getPath());
 			}
 		} else {
@@ -48,7 +48,7 @@ public class FileParser {
 			// Checking dir.isDirectory() above would not be sufficient
 			// to avoid race conditions with another process that deletes
 			// directories.
-			System.out.println("here");
+			
 		}
 
 	}
@@ -56,7 +56,7 @@ public class FileParser {
 	public void parseFile(String file_name){
 
 		File file = new File(file_name);
-		System.out.println(file_name);
+		
 		try{
 
 			Scanner inputStream = new Scanner(file);
@@ -88,7 +88,7 @@ public class FileParser {
 			temp = 9999;
 		}
 		
-		System.out.println(temp);
+		
 		switch (temp){
 		case 1111:
 			current_prof = 1111;
@@ -217,7 +217,6 @@ public class FileParser {
 
 	private void breakDownMatLine(String line){
 		ArrayList<String> temp_list = new ArrayList<String>(Arrays.asList(line.split(",")));
-		System.out.println("Here");
 		String name = temp_list.get(0);
 		double cost = Double.parseDouble(temp_list.get(1));
 		double sell = Double.parseDouble(temp_list.get(2));

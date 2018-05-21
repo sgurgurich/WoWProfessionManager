@@ -67,7 +67,7 @@ public class MaterialsDatabase {
 		output[0] = mat.getName();
 		output[1] = Double.toString(mat.getCost());
 		output[2] = Double.toString(mat.getSell());
-		output[3] = ""; //TODO: CHANGE THIS
+		output[3] = Double.toString(mat.getSell() - mat.getCost()); //TODO: CHANGE THIS
 		
 		
 		return output;
