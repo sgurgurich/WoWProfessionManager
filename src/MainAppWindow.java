@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import Databases.CraftingRecipeDatabase;
 import Databases.MaterialMapper;
 import Databases.MaterialsDatabase;
+import RecipeClasses.*;
 import FileParsing.FileParser;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
@@ -38,6 +39,8 @@ public class MainAppWindow {
 	String[] rec_columns;
 	int entered_quantity;
 	double estimated_cost;
+	double est_profit;
+	double est_profit_per;
 	
 	/**
 	 * Launch the application.
@@ -68,7 +71,9 @@ public class MainAppWindow {
 	private void initialize() {
 		
 		entered_quantity = 0;
-		estimated_cost = 0;
+		estimated_cost   = 0.0;
+		est_profit       = 0.0;
+		est_profit_per   = 0.0;
 		
 		//Create a list of all crafting professions
 		String[] profStrings = {"Alchemy","Blacksmithing","Enchanting","Engineering","Inscription","Jewelcrafting","Leatherworking","Tailoring"};
@@ -101,6 +106,7 @@ public class MainAppWindow {
 
 		JScrollPane scrollPane = new JScrollPane();
 		JTable table = new JTable(matsModel);
+		table.setColumnSelectionAllowed(false);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		scrollPane.setViewportView(table); 
 		scrollPane.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -110,6 +116,7 @@ public class MainAppWindow {
 		
 		JScrollPane scrollPane2 = new JScrollPane();
 		JTable table2 = new JTable(recModel);
+		table2.setColumnSelectionAllowed(false);
 		table2.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		table2.getColumnModel().getColumn(0).setPreferredWidth(500);
 		table2.getColumnModel().getColumn(1).setPreferredWidth(75);
@@ -171,16 +178,28 @@ public class MainAppWindow {
 		frame.getContentPane().add(textField_1);
 		textField_1.setColumns(10);
 		
-		textField = new JTextField();
+		textField = new JTextField(Integer.toString(entered_quantity));
 		textField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				calculateCost();
+				entered_quantity = Integer.parseInt(textField.getText());
+				
+				
 				textField_1.setText(Double.toString(estimated_cost));
 			}
 		});
 		textField.setBounds(26, 299, 86, 20);
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
+		
+		textField_2 = new JTextField(Double.toString(est_profit_per));
+		textField_2.setBounds(122, 370, 108, 20);
+		frame.getContentPane().add(textField_2);
+		textField_2.setColumns(10);
+		
+		textField_3 = new JTextField(Double.toString(est_profit));
+		textField_3.setBounds(123, 401, 107, 20);
+		frame.getContentPane().add(textField_3);
+		textField_3.setColumns(10);
 		
 		JLabel lblAmountCreated = new JLabel("Quantity");
 		lblAmountCreated.setBounds(26, 283, 113, 14);
@@ -196,24 +215,35 @@ public class MainAppWindow {
 				try {
 					entered_quantity = Integer.parseInt(textField.getText());
 					double profit_earned = 1.0;
+					RecipeClass temp_rec = recipe_database.lookUpRecipe(comboBox.getSelectedItem().toString(), table2.getSelectedRow());
+					
+					
+					est_profit_per =(calculateSales(temp_rec) - calculateCost(temp_rec));
+					est_profit = entered_quantity * est_profit_per;
+					
+					textField_2.setText(Double.toString(est_profit_per));
+					textField_3.setText(Double.toString(est_profit));
+					
+					System.out.println(temp_rec.getName());
+					System.out.println(entered_quantity);
+					System.out.println(calculateCost(temp_rec));
+					System.out.println(calculateSales(temp_rec));
+					
+					
+					
 				}
 				catch (NumberFormatException nfe) {
-					
+					//pass
+				}
+				catch (IndexOutOfBoundsException ioobe){
+					//pass
 				}
 			}
 		});
 		btnCalculateProfit.setBounds(26, 330, 204, 23);
 		frame.getContentPane().add(btnCalculateProfit);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(122, 370, 108, 20);
-		frame.getContentPane().add(textField_2);
-		textField_2.setColumns(10);
-		
-		textField_3 = new JTextField();
-		textField_3.setBounds(123, 401, 107, 20);
-		frame.getContentPane().add(textField_3);
-		textField_3.setColumns(10);
+
 		
 		JLabel lblEstProfitunit = new JLabel("Est. Profit/Unit");
 		lblEstProfitunit.setBounds(26, 373, 86, 14);
@@ -245,7 +275,52 @@ public class MainAppWindow {
 		recModel.setRowCount(0);
 	}
 	
-	private void calculateCost() {
-		estimated_cost = 2000.01;
+	private double calculateSales(RecipeClass recipe) {
+		double out = 0.0;
+		
+		out = recipe.getSell();
+		
+		return out;
 	}
+	
+	private double calculateCost(RecipeClass recipe) {
+		
+		double out = 0.0;
+		
+		try{
+			out = out + (recipe.getQtMat1() * (recipe.getMat1().getCost()));
+		}catch(NullPointerException npe){
+			// pass
+		}
+		
+		try{
+			out = out + (recipe.getQtMat2() * (recipe.getMat2().getCost()));
+		}catch(NullPointerException npe){
+			// pass
+		}
+		
+		try{
+			out = out + (recipe.getQtMat3() * (recipe.getMat3().getCost()));
+		}catch(NullPointerException npe){
+			// pass
+		}
+		
+		try{
+			out = out + (recipe.getQtMat4() * (recipe.getMat4().getCost()));
+		}catch(NullPointerException npe){
+			// pass
+		}
+		
+		try{
+			out = out + (recipe.getQtMat5() * (recipe.getMat5().getCost()));
+		}catch(NullPointerException npe){
+			// pass
+		}
+		
+		estimated_cost = out;
+		return out;
+		
+	}
+	
+	
 }

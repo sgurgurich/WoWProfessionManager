@@ -15,7 +15,7 @@ public class RecipeClass {
 	private int qtMat5;
 	
 	
-	private int sell;
+	private double sell;
 
 	public RecipeClass(String name, 
 			MaterialClass mat1,
@@ -27,7 +27,8 @@ public class RecipeClass {
 			int qtMat2,
 			int qtMat3,
 			int qtMat4,
-			int qtMat5){
+			int qtMat5,
+			double sell){
 		
 		this.name = name;
 		this.mat1 = mat1;
@@ -42,7 +43,7 @@ public class RecipeClass {
 		this.qtMat4 = qtMat4;
 		this.qtMat5 = qtMat5;
 		
-		this.sell = 0;
+		this.sell = sell;
 
 	}
 	
@@ -172,7 +173,7 @@ public class RecipeClass {
 		this.mat5 = mat5;
 	}
 
-	public int getSell() {
+	public double getSell() {
 		return sell;
 	}
 

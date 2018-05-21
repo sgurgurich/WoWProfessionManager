@@ -145,26 +145,29 @@ public class FileParser {
 		MaterialClass temp_mat3;
 		MaterialClass temp_mat4;
 		MaterialClass temp_mat5;
+		double sell;
 		
 		
 		switch(temp_list.size()){
-		case 3:
+		case 4:
 			name = temp_list.get(0);
 			temp_qt1 = Integer.parseInt(temp_list.get(1));
 			temp_mat1 = new MaterialClass(temp_list.get(2), 0, 0);
-			db_pop.addRecipe(current_prof, name, temp_qt1, temp_mat1);
+			sell = Double.parseDouble(temp_list.get(3));
+			db_pop.addRecipe(current_prof, name, sell, temp_qt1, temp_mat1);
 			break;
 
-		case 5:
+		case 6:
 			name = temp_list.get(0);
 			temp_qt1 = Integer.parseInt(temp_list.get(1));
 			temp_qt2 = Integer.parseInt(temp_list.get(3));
 			temp_mat1 = new MaterialClass(temp_list.get(2), 0, 0);
 			temp_mat2 = new MaterialClass(temp_list.get(4), 0, 0);
-			db_pop.addRecipe(current_prof, name, temp_qt1, temp_mat1, temp_qt2, temp_mat2);
+			sell = Double.parseDouble(temp_list.get(5));
+			db_pop.addRecipe(current_prof, name, sell, temp_qt1, temp_mat1, temp_qt2, temp_mat2);
 			break;
 
-		case 7:
+		case 8:
 			name = temp_list.get(0);
 			temp_qt1 = Integer.parseInt(temp_list.get(1));
 			temp_qt2 = Integer.parseInt(temp_list.get(3));
@@ -172,10 +175,11 @@ public class FileParser {
 			temp_mat1 = new MaterialClass(temp_list.get(2), 0, 0);
 			temp_mat2 = new MaterialClass(temp_list.get(4), 0, 0);
 			temp_mat3 = new MaterialClass(temp_list.get(6), 0, 0);
-			db_pop.addRecipe(current_prof, name, temp_qt1, temp_mat1, temp_qt2, temp_mat2, temp_qt3, temp_mat3);
+			sell = Double.parseDouble(temp_list.get(7));
+			db_pop.addRecipe(current_prof, name, sell, temp_qt1, temp_mat1, temp_qt2, temp_mat2, temp_qt3, temp_mat3);
 			break;
 
-		case 9:
+		case 10:
 			name = temp_list.get(0);
 			temp_qt1 = Integer.parseInt(temp_list.get(1));
 			temp_qt2 = Integer.parseInt(temp_list.get(3));
@@ -185,10 +189,11 @@ public class FileParser {
 			temp_mat2 = new MaterialClass(temp_list.get(4), 0, 0);
 			temp_mat3 = new MaterialClass(temp_list.get(6), 0, 0);
 			temp_mat4 = new MaterialClass(temp_list.get(8), 0, 0);
-			db_pop.addRecipe(current_prof, name, temp_qt1, temp_mat1, temp_qt2, temp_mat2, temp_qt3, temp_mat3, temp_qt4, temp_mat4);
+			sell = Double.parseDouble(temp_list.get(9));
+			db_pop.addRecipe(current_prof, name, sell, temp_qt1, temp_mat1, temp_qt2, temp_mat2, temp_qt3, temp_mat3, temp_qt4, temp_mat4);
 			break;
 
-		case 11:
+		case 12:
 			name = temp_list.get(0);
 			temp_qt1 = Integer.parseInt(temp_list.get(1));
 			temp_qt2 = Integer.parseInt(temp_list.get(3));
@@ -200,7 +205,8 @@ public class FileParser {
 			temp_mat3 = new MaterialClass(temp_list.get(6), 0, 0);
 			temp_mat4 = new MaterialClass(temp_list.get(8), 0, 0);
 			temp_mat5 = new MaterialClass(temp_list.get(10), 0, 0);
-			db_pop.addRecipe(current_prof, name, temp_qt1, temp_mat1, temp_qt2, temp_mat2, temp_qt3, temp_mat3, temp_qt4, temp_mat4, temp_qt5, temp_mat5);
+			sell = Double.parseDouble(temp_list.get(11));
+			db_pop.addRecipe(current_prof, name, sell, temp_qt1, temp_mat1, temp_qt2, temp_mat2, temp_qt3, temp_mat3, temp_qt4, temp_mat4, temp_qt5, temp_mat5);
 			break;
 
 		default:

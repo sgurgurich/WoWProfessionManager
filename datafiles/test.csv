@@ -1,10 +1,10 @@
 1111						
 0000					
-Test Recipe 1,1,Test Mat 1,2,Test Mat 1,4,Test Mat 1,
-Test Recipe 2,2,Test Mat 2,3,Test Mat 2,3,Test Mat 2,
-Test Recipe 3,3,Test Mat 3,4,Test Mat 3,4,Test Mat 3,
-Test Recipe 4,4,Test Mat 4,5,Test Mat 4,1,Test Mat 4,
-Test Recipe 5,5,Test Mat 5,6,Test Mat 5,7,Test Mat 5,
+Test Recipe 1,1,Test Mat 1,2,Test Mat 1,4,Test Mat 1,1000,
+Test Recipe 2,2,Test Mat 2,3,Test Mat 2,3,Test Mat 2,2000,
+Test Recipe 3,3,Test Mat 3,4,Test Mat 3,4,Test Mat 3,3000,
+Test Recipe 4,4,Test Mat 4,5,Test Mat 4,1,Test Mat 4,4000,
+Test Recipe 5,5,Test Mat 5,6,Test Mat 5,7,Test Mat 5,5000,
 1112
 0000
 Super Flux,1,Basic Flux,3,Ghost Iron Ore,12, Blood of Sargeras,

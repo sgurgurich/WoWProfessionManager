@@ -111,7 +111,44 @@ public class CraftingRecipeDatabase {
 		return output;
 	}
 	
-	public String[][] packAllRecipes(String selected_prof){
+	public RecipeClass lookUpRecipe(String selected_prof, int index){
+		RecipeClass output = null;
+		ArrayList<RecipeClass> temp_list = new ArrayList<RecipeClass>();
+		switch(selected_prof) {
+		case "Alchemy":
+			temp_list = alch_recipes;
+			break;
+		case "Blacksmithing":
+			temp_list = blacksmith_recipes;
+			break;
+		case "Enchanting":
+			temp_list = enchant_recipes;
+			break;
+		case "Engineering":
+			temp_list = engineer_recipes;
+			break;
+		case "Inscription":
+			temp_list = inscription_recipes;
+			break;
+		case "Jewelcrafting":
+			temp_list = jewel_recipes;
+			break;
+		case "Leatherworking":
+			temp_list = leather_recipes;
+			break;
+		case "Tailoring":
+			temp_list = tailor_recipes;
+			break;
+		default:
+			break;
+		}
+		
+		output = temp_list.get(index);
+		
+		return output;
+	}
+	
+ 	public String[][] packAllRecipes(String selected_prof){
 		
 		ArrayList<RecipeClass> temp_list = new ArrayList<RecipeClass>();
 		

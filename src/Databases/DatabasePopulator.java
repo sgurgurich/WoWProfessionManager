@@ -13,31 +13,31 @@ public class DatabasePopulator {
 		this.material_data = material_data;
 	}
 	
-	public void addRecipe(int prof_code, String rec_name, int qt1, MaterialClass mat1){
-		RecipeClass temp_recipe = new RecipeClass(rec_name, mat1, null, null, null, null, qt1, 0, 0, 0, 0);
+	public void addRecipe(int prof_code, String rec_name, double sell, int qt1, MaterialClass mat1){
+		RecipeClass temp_recipe = new RecipeClass(rec_name, mat1, null, null, null, null, qt1, 0, 0, 0, 0, sell);
 		recipe_data.addRecipe(prof_code, temp_recipe); 
 	}
 	
-	public void addRecipe(int prof_code, String rec_name, int qt1, MaterialClass mat1, int qt2, MaterialClass mat2){
-		RecipeClass temp_recipe = new RecipeClass(rec_name, mat1, mat2, null, null, null, qt1, qt2, 0, 0, 0);
+	public void addRecipe(int prof_code, String rec_name, double sell, int qt1, MaterialClass mat1, int qt2, MaterialClass mat2){
+		RecipeClass temp_recipe = new RecipeClass(rec_name, mat1, mat2, null, null, null, qt1, qt2, 0, 0, 0, sell);
 		recipe_data.addRecipe(prof_code, temp_recipe);
 	}
 	
-	public void addRecipe(int prof_code, String rec_name, int qt1, MaterialClass mat1, int qt2, MaterialClass mat2,
+	public void addRecipe(int prof_code, String rec_name, double sell, int qt1, MaterialClass mat1, int qt2, MaterialClass mat2,
 			int qt3, MaterialClass mat3){
-		RecipeClass temp_recipe = new RecipeClass(rec_name, mat1, mat2, mat3, null, null, qt1, qt2, qt3, 0, 0);
+		RecipeClass temp_recipe = new RecipeClass(rec_name, mat1, mat2, mat3, null, null, qt1, qt2, qt3, 0, 0, sell);
 		recipe_data.addRecipe(prof_code, temp_recipe);
 	}
 	
-	public void addRecipe(int prof_code, String rec_name, int qt1, MaterialClass mat1, int qt2, MaterialClass mat2,
+	public void addRecipe(int prof_code, String rec_name, double sell, int qt1, MaterialClass mat1, int qt2, MaterialClass mat2,
 			int qt3, MaterialClass mat3, int qt4, MaterialClass mat4){
-		RecipeClass temp_recipe = new RecipeClass(rec_name, mat1, mat2, mat3, mat4, null, qt1, qt2, qt3, qt4, 0);
+		RecipeClass temp_recipe = new RecipeClass(rec_name, mat1, mat2, mat3, mat4, null, qt1, qt2, qt3, qt4, 0, sell);
 		recipe_data.addRecipe(prof_code, temp_recipe);
 	}
 	
-	public void addRecipe(int prof_code, String rec_name, int qt1, MaterialClass mat1, int qt2, MaterialClass mat2,
+	public void addRecipe(int prof_code, String rec_name, double sell, int qt1, MaterialClass mat1, int qt2, MaterialClass mat2,
 			int qt3, MaterialClass mat3, int qt4, MaterialClass mat4, int qt5, MaterialClass mat5){
-		RecipeClass temp_recipe = new RecipeClass(rec_name, mat1, mat2, mat3, mat4, mat5, qt1, qt2, qt3, qt4, qt5);
+		RecipeClass temp_recipe = new RecipeClass(rec_name, mat1, mat2, mat3, mat4, mat5, qt1, qt2, qt3, qt4, qt5, sell);
 		recipe_data.addRecipe(prof_code, temp_recipe);
 	}
 	
